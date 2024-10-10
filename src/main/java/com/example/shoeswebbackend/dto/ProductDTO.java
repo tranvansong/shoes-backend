@@ -20,5 +20,5 @@ public class ProductDTO {
     private long categoryId;
     private long brandId;
     private List<ProductVariantRequest> variants = new ArrayList<>();
-    private List<String> existImages = new ArrayList<String>();
+    private List<String> existImages = new ArrayList<>();
 }
