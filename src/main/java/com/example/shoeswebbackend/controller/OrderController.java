@@ -2,8 +2,10 @@ package com.example.shoeswebbackend.controller;
 
 import com.example.shoeswebbackend.dto.OrderRequest;
 import com.example.shoeswebbackend.dto.response.OrderResponse;
+import com.example.shoeswebbackend.exception.OutOfStockException;
 import com.example.shoeswebbackend.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +21,11 @@ public class OrderController {
 
     @PostMapping("/create")
     public ResponseEntity<?> saveOrder(@RequestBody OrderRequest orderRequest) {
-        orderService.saveOrder(orderRequest);
-        return ResponseEntity.ok().body("Order created successfully");
+        try {
+            orderService.saveOrder(orderRequest);
+            return ResponseEntity.ok().body("Order created successfully");
+        } catch (OutOfStockException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 }
